@@ -1,12 +1,12 @@
 {
-  "name": "T2K Dice",
+  "name": "TWDU Dice",
   "version": "0.0.1",
   "manifest_version": 1,
   "author": "Jussi Soini aka Pulpscape",
   "icon": "/logo.png",
-  "description": "Dice for Twilight 2000 4ed",
+  "description": "Dice for The Walking Dead Universe RPG",
   "action": {
-    "title": "T2K Dice",
+    "title": "TWDU Dice",
     "icon": "/icon.svg",
     "popover": "/",
     "height": 700,

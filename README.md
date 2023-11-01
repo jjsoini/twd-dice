@@ -1,6 +1,6 @@
-# Twilight 2000 4e Dice
+# The Walking Dead Universe RPG Dice
 
-Beautiful 3D dice extension for FreeLeague Twilight 2000 4e, based on the [Owlbear Rodeo Dice Extension](https://github.com/owlbear-rodeo/dice).
+Beautiful 3D dice extension for Free League's The Walking Dead Universe RPG, based on the [Owlbear Rodeo Dice Extension](https://github.com/owlbear-rodeo/dice).
 
 ![Example](/docs/header.jpg)
 
