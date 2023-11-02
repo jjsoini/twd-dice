@@ -2,13 +2,13 @@
 title: Dice for Free League's The Walking Dead Universe RPG
 description: Dice for Free League's The Walking Dead Universe RPG
 author: Jussi Soini
-image: https://raw.githubusercontent.com/jjsoini/t2k-dice/main/docs/header.jpg
-icon: https://pulpscape-t2k-dice.onrender.com/logo.png
+image: https://raw.githubusercontent.com/jjsoini/twd-dice/main/docs/header.jpg
+icon: https://pulpscape-twd-dice.onrender.com/logo.png
 tags:
   - pulpscape
   - the-walking-dead-universe-rpg
   - dice
-manifest: https://pulpscape-t2k-dice.onrender.com/manifest.json
+manifest: https://pulpscape-twd-dice.onrender.com/manifest.json
 ---
 
 # Dice
