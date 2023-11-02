@@ -33,7 +33,7 @@ export function DicePicker() {
             badgeContent={count}
             sx={{
               ".MuiBadge-badge": {
-                bgcolor: "#736852",
+                bgcolor: "#211D1B",
                 pointerEvents: "none",
               },
             }}

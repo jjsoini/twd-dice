@@ -20,14 +20,14 @@ function getTheme(theme?: Theme) {
       : {
           mode: "dark",
           primary: {
-            main: "#455540",
+            main: "#211D1B",
           },
           secondary: {
             main: "#ee99ff",
           },
           background: {
             paper: "#222639",
-            default: "#1e2231",
+            default: "#1D1C1E",
           },
         },
     shape: {
