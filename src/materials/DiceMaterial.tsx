@@ -1,16 +1,16 @@
 import { DiceStyle } from "../types/DiceStyle";
-import { T2K1Material } from "./t2k1/T2K1Material";
-import { T2K2Material } from "./t2k2/T2K2Material";
-import { T2K3Material } from "./t2k3/T2K3Material";
+import { TWD1Material } from "./twd1/TWD1Material";
+import { TWD2Material } from "./twd2/TWD2Material";
+import { TWD3Material } from "./twd3/TWD3Material";
 
 export function DiceMaterial({ diceStyle }: { diceStyle: DiceStyle }) {
   switch (diceStyle) {
-    case "T2K1":
-      return <T2K1Material />;
-    case "T2K2":
-      return <T2K2Material />;
-    case "T2K3":
-      return <T2K3Material />;
+    case "TWD1":
+      return <TWD1Material />;
+    case "TWD2":
+      return <TWD2Material />;
+    case "TWD3":
+      return <TWD3Material />;
     default:
       throw Error(`Dice style ${diceStyle} error: not implemented`);
   }

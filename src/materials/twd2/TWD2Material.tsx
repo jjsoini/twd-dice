@@ -5,7 +5,7 @@ import orm from "./orm.jpg";
 import normal from "./normal.jpg";
 import { gltfTexture } from "../../helpers/gltfTexture";
 
-export function T2K1Material(
+export function TWD2Material(
   props: JSX.IntrinsicElements["meshPhysicalMaterial"]
 ) {
   const [albedoMap, ormMap, normalMap] = useTexture(
@@ -17,11 +17,11 @@ export function T2K1Material(
     <meshPhysicalMaterial
       map={albedoMap}
       aoMap={ormMap}
-      metalnessMap={ormMap}
       roughnessMap={ormMap}
+      metalnessMap={ormMap}
       normalMap={normalMap}
       clearcoat={0.2}
-      clearcoatRoughness={2}
+      clearcoatRoughness={2}      
       {...props}
     />
   );
