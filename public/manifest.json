@@ -1,10 +1,10 @@
 {
   "name": "TWDU Dice",
-  "version": "0.0.1",
-  "manifest_version": 1,
+  "version": "1.0.0",
+  "manifest_version": 1.1,
   "author": "Jussi Soini aka Pulpscape",
   "icon": "/logo.png",
-  "description": "Dice for The Walking Dead Universe RPG",
+  "description": "Dice for The Walking Dead Universe RPG (unofficial)",
   "action": {
     "title": "TWDU Dice",
     "icon": "/icon.svg",
