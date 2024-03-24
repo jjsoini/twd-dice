@@ -31,6 +31,7 @@ interface DiceRollState {
   clearRoll: (ids?: string) => void;
   /** Reroll select ids of dice or reroll all dice by passing `undefined` */
   reroll: (ids?: string[], manualThrows?: Record<string, DiceThrow>) => void;
+  push: (ids?: string[], manualThrows?: Record<string, DiceThrow>) => void;
   finishDieRoll: (id: string, number: number, transform: DiceTransform) => void;
 }
 
@@ -75,6 +76,20 @@ export const useDiceRollStore = create<DiceRollState>()(
         }
       });
     },
+    push: (ids, manualThrows) => {
+      set((state) => {
+        if (state.roll) {
+          pushDraft(
+            state.roll,
+            ids,
+            manualThrows,
+            state.rollValues,
+            state.rollTransforms,
+            state.rollThrows
+          );
+        }
+      });
+    },
     finishDieRoll: (id, number, transform) => {
       set((state) => {
         state.rollValues[id] = number;
@@ -93,6 +108,53 @@ function rerollDraft(
   rollTransforms: WritableDraft<Record<string, DiceTransform | null>>,
   rollThrows: WritableDraft<Record<string, DiceThrow>>
 ) {
+
+  for (let dieOrDice of diceRoll.dice) {
+    if (isDie(dieOrDice)) {
+      if (!ids || ids.includes(dieOrDice.id)) {
+        delete rollValues[dieOrDice.id];
+        delete rollTransforms[dieOrDice.id];
+        delete rollThrows[dieOrDice.id];
+        const manualThrow = manualThrows?.[dieOrDice.id];
+        const id = generateDiceId();
+        dieOrDice.id = id;
+        rollValues[id] = null;
+        rollTransforms[id] = null;
+        if (manualThrow) {
+          rollThrows[id] = manualThrow;
+        } else {
+          rollThrows[id] = getRandomDiceThrow();
+        }
+      }
+    } else if (isDice(dieOrDice)) {
+      rerollDraft(
+        dieOrDice,
+        ids,
+        manualThrows,
+        rollValues,
+        rollTransforms,
+        rollThrows
+      );
+    }
+  }
+}
+
+/** Recursively update the ids of a draft to reroll dice */
+function pushDraft(
+  diceRoll: WritableDraft<DiceRoll>,
+  ids: string[] | undefined,
+  manualThrows: Record<string, DiceThrow> | undefined,
+  rollValues: WritableDraft<Record<string, number | null>>,
+  rollTransforms: WritableDraft<Record<string, DiceTransform | null>>,
+  rollThrows: WritableDraft<Record<string, DiceThrow>>
+) {
+
+    const newId = generateDiceId();
+    diceRoll.dice.push({id:newId, style:"TWD2", type:"D6"});
+    rollValues[newId] = null;
+    rollTransforms[newId] = null;
+    rollThrows[newId] = getRandomDiceThrow();
+
   for (let dieOrDice of diceRoll.dice) {
     if (isDie(dieOrDice)) {
       if (!ids || ids.includes(dieOrDice.id)) {

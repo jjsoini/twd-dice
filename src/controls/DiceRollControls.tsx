@@ -313,6 +313,7 @@ function FinishedRollControls() {
   const roll = useDiceRollStore((state) => state.roll);
   const clearRoll = useDiceRollStore((state) => state.clearRoll);
   const reroll = useDiceRollStore((state) => state.reroll);
+  const push = useDiceRollStore((state) => state.push);
 
   const rollValues = useDiceRollStore((state) => state.rollValues);
   const finishedRollValues = useMemo(() => {
@@ -328,9 +329,9 @@ function FinishedRollControls() {
   const [resultsExpanded, setResultsExpanded] = useState(false);
 
   function pushRoll(){
-
-      reroll(getDiceToPush(roll as Dice, finishedRollValues));
-
+      if (getDiceToPush(roll as Dice, finishedRollValues) !== undefined) {
+        push(getDiceToPush(roll as Dice, finishedRollValues));
+      }
   }
 
   return (
