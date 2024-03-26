@@ -53,7 +53,11 @@ export const useDiceRollStore = create<DiceRollState>()(
         for (const die of dice) {
           state.rollValues[die.id] = null;
           state.rollTransforms[die.id] = null;
-          state.rollThrows[die.id] = getRandomDiceThrow(Math.max(1.7,speedMultiplier));
+          let speed:number = 1;
+          if (speedMultiplier) {
+            speed = speedMultiplier;
+          }
+          state.rollThrows[die.id] = getRandomDiceThrow(Math.max(1.7,speed));
         }
       }),
     clearRoll: (ids) =>
@@ -225,7 +229,7 @@ function pushDraft(
         if (manualThrow) {
           rollThrows[id] = manualThrow;
         } else {
-          rollThrows[id] = getRandomDiceThrow(1.7);
+          rollThrows[id] = getRandomDiceThrow();
         }
       }
     } else if (isDice(dieOrDice)) {
