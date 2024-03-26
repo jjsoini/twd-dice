@@ -29,10 +29,11 @@ interface DiceRollState {
   rollThrows: Record<string, DiceThrow>;
   startRoll: (roll: DiceRoll, speedMultiplier?: number) => void;
   clearRoll: (ids?: string) => void;
-  /** Reroll select ids of dice or reroll all dice by passing `undefined` */
   reroll: (ids?: string[], manualThrows?: Record<string, DiceThrow>) => void;
   push: (ids?: string[], manualThrows?: Record<string, DiceThrow>) => void;
+  addDie: () => void;
   finishDieRoll: (id: string, number: number, transform: DiceTransform) => void;
+  addStress: () => void;
 }
 
 export const useDiceRollStore = create<DiceRollState>()(
@@ -55,12 +56,43 @@ export const useDiceRollStore = create<DiceRollState>()(
           state.rollThrows[die.id] = getRandomDiceThrow(speedMultiplier);
         }
       }),
-    clearRoll: () =>
+    clearRoll: (ids) =>
       set((state) => {
-        state.roll = null;
-        state.rollValues = {};
-        state.rollTransforms = {};
-        state.rollThrows = {};
+        
+        if(ids){
+          if(true){
+            //deleting dice.. create new draft that copies all the dice rolls and transforms except the one with the id.
+            let newRoll: WritableDraft<DiceRoll> = {dice:[], hidden: state.roll?.hidden};
+            let newValues: WritableDraft<Record<string, number | null>> = {};
+            let newTransforms: WritableDraft<Record<string, DiceTransform | null>> = {};
+            let newThrows: WritableDraft<Record<string, DiceThrow>> = {};
+            if (state.roll !== null) {
+              for(const die of state.roll.dice){
+                if(isDie(die)){
+                  if(die.id !== ids){
+                    newRoll.dice.push(die);
+                    newValues[die.id] = state.rollValues[die.id];
+                    newTransforms[die.id] = state.rollTransforms[die.id];
+                    newThrows[die.id] = state.rollThrows[die.id];
+                  }
+                }
+              }
+            }
+            state.roll = null;
+            state.rollValues = {};
+            state.rollTransforms = {};
+            state.rollThrows = {};
+            state.roll = newRoll;
+            state.rollValues = newValues;
+            state.rollTransforms = newTransforms;
+            state.rollThrows = newThrows;
+          }
+        } else {
+          state.roll = null;
+          state.rollValues = {};
+          state.rollTransforms = {};
+          state.rollThrows = {};     
+        }
       }),
     reroll: (ids, manualThrows) => {
       set((state) => {
@@ -90,10 +122,34 @@ export const useDiceRollStore = create<DiceRollState>()(
         }
       });
     },
+    addDie: () => {
+      set((state) => {
+        if (state.roll) {
+          addDieDraft(
+            state.roll,
+            state.rollValues,
+            state.rollTransforms,
+            state.rollThrows
+          );
+        }
+      });
+    },
     finishDieRoll: (id, number, transform) => {
       set((state) => {
         state.rollValues[id] = number;
         state.rollTransforms[id] = transform;
+      });
+    },
+    addStress: () => {
+      set((state) => {
+        if (state.roll) {
+          addStressDraft(
+            state.roll,
+            state.rollValues,
+            state.rollTransforms,
+            state.rollThrows
+          );
+        }
       });
     },
   }))
@@ -173,7 +229,7 @@ function pushDraft(
         }
       }
     } else if (isDice(dieOrDice)) {
-      rerollDraft(
+      pushDraft(
         dieOrDice,
         ids,
         manualThrows,
@@ -183,4 +239,36 @@ function pushDraft(
       );
     }
   }
+}
+
+function addDieDraft(
+  diceRoll: WritableDraft<DiceRoll>,
+  rollValues: WritableDraft<Record<string, number | null>>,
+  rollTransforms: WritableDraft<Record<string, DiceTransform | null>>,
+  rollThrows: WritableDraft<Record<string, DiceThrow>>,
+  isStress?:boolean
+) {
+
+    const newId = generateDiceId();
+    diceRoll.dice.push({id:newId, style:"TWD1", type:"D6"});
+    rollValues[newId] = null;
+    rollTransforms[newId] = null;
+    rollThrows[newId] = getRandomDiceThrow();
+
+}
+
+function addStressDraft(
+  diceRoll: WritableDraft<DiceRoll>,
+  rollValues: WritableDraft<Record<string, number | null>>,
+  rollTransforms: WritableDraft<Record<string, DiceTransform | null>>,
+  rollThrows: WritableDraft<Record<string, DiceThrow>>,
+  isStress?:boolean
+) {
+
+    const newId = generateDiceId();
+    diceRoll.dice.push({id:newId, style:"TWD2", type:"D6"});
+    rollValues[newId] = null;
+    rollTransforms[newId] = null;
+    rollThrows[newId] = getRandomDiceThrow();
+
 }

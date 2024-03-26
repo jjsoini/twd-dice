@@ -16,12 +16,17 @@ import RollIcon from "@mui/icons-material/ArrowForwardRounded";
 
 import { RerollDiceIcon } from "../icons/RerollDiceIcon";
 import { PushDiceIcon } from "../icons/PushDiceIcon";
+import { DeleteDieIcon } from "../icons/DeleteDieIcon";
+import { DeleteStressIcon } from "../icons/DeleteStressIcon";
+import { AddDieIcon } from "../icons/AddDieIcon";
+import { AddStressIcon } from "../icons/AddStressIcon";
 
 import { GradientOverlay } from "./GradientOverlay";
 import { useDiceRollStore } from "../dice/store";
 import { DiceResults } from "./DiceResults";
 import { getDiceToRoll, useDiceControlsStore } from "./store";
 import { getDiceToPush } from "../helpers/getDiceToPush";
+import { getDieToDelete } from "../helpers/getDieToDelete";
 import { DiceType } from "../types/DiceType";
 import { useDiceHistoryStore } from "./history";
 import { Die } from "../types/Die";
@@ -314,6 +319,8 @@ function FinishedRollControls() {
   const clearRoll = useDiceRollStore((state) => state.clearRoll);
   const reroll = useDiceRollStore((state) => state.reroll);
   const push = useDiceRollStore((state) => state.push);
+  const addDie = useDiceRollStore((state) => state.addDie);
+  const addStress = useDiceRollStore((state) => state.addStress);
 
   const rollValues = useDiceRollStore((state) => state.rollValues);
   const finishedRollValues = useMemo(() => {
@@ -332,6 +339,23 @@ function FinishedRollControls() {
       if (getDiceToPush(roll as Dice, finishedRollValues) !== undefined) {
         push(getDiceToPush(roll as Dice, finishedRollValues));
       }
+  }
+
+  function addDieToRoll(isStress?:boolean){
+    if(isStress) {
+      addStress();
+    } else {
+      addDie();
+    }
+  }
+
+  function deleteDie(isStress?:boolean){
+
+    const id:string | undefined = getDieToDelete(roll as Dice, finishedRollValues, isStress);
+    if (id !== undefined) {
+      clearRoll(id);
+    }
+
   }
 
   return (
@@ -354,7 +378,25 @@ function FinishedRollControls() {
           width="100%"
           alignItems="start"
         >
-          <Stack direction="row">
+          <Stack direction="column" spacing={0}>
+            <Tooltip title="Push" sx={{ pointerEvents: "all" }}>
+              <IconButton
+                onClick={() => pushRoll()}
+                sx={{ pointerEvents: "all", color: "white" }}
+              >
+                <PushDiceIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+          <Stack direction="row-reverse" spacing={1}>
+            <Tooltip title="Clear" sx={{ pointerEvents: "all" }}>
+              <IconButton
+                onClick={() => clearRoll()}
+                sx={{ pointerEvents: "all", color: "white" }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Reroll" sx={{ pointerEvents: "all" }}>
               <IconButton
                 onClick={() => reroll()}
@@ -363,25 +405,68 @@ function FinishedRollControls() {
                 <RerollDiceIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Push" sx={{ pointerEvents: "all" }}>
-              <IconButton
-                onClick={() => pushRoll()}
-                sx={{ pointerEvents: "all", color: "white" }}
-              >
-                <PushDiceIcon />
-              </IconButton>
-            </Tooltip>   
-          </Stack>       
-          <Tooltip title="Clear" sx={{ pointerEvents: "all" }}>
-            <IconButton
-              onClick={() => clearRoll()}
-              sx={{ pointerEvents: "all", color: "white" }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
+          </Stack> 
         </Stack>
       </Box>
+
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          pointerEvents: "none",
+          padding: 3,
+        }}
+        component="div"
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          width="100%"
+          alignItems="start"
+        >
+          <Stack direction="row" spacing={1}>
+          <Tooltip title="Roll base die" placement="top" sx={{ pointerEvents: "all" }}>
+              <IconButton
+                onClick={() => addDieToRoll()}
+                sx={{ pointerEvents: "all", color: "white" }}
+              >
+                <AddDieIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Roll stress die" placement="top" sx={{ pointerEvents: "all" }}>
+              <IconButton
+                onClick={() => addDieToRoll(true)}
+                sx={{ pointerEvents: "all", color: "white" }}
+              >
+                <AddStressIcon />
+              </IconButton>
+            </Tooltip>
+
+            </Stack>
+          <Stack direction="row" spacing={1}>
+
+            <Tooltip title="Remove base die" placement="top" sx={{ pointerEvents: "all" }}>
+              <IconButton
+                onClick={() => deleteDie()}
+                sx={{ pointerEvents: "all", color: "white" }}
+              >
+                <DeleteDieIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Remove stress" placement="top" sx={{ pointerEvents: "all" }}>
+              <IconButton
+                onClick={() => deleteDie(true)}
+                sx={{ pointerEvents: "all", color: "white" }}
+              >
+                <DeleteStressIcon />
+              </IconButton>
+            </Tooltip>
+            </Stack>
+        </Stack>
+      </Box>
+
       <Stack
         sx={{
           position: "absolute",
