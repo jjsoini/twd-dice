@@ -193,9 +193,9 @@ export function PhysicsDice({
       // Increase gravity on the dice to offset the non-standard dice size.
       // Dice are around 10x larger then they should be to account for
       // physics errors when shown at proper size.
-      gravityScale={2}
+      gravityScale={1.7}
       density={getDieDensity(die)}
-      friction={0.1}
+      friction={0.075}
       position={position}
       rotation={rotation}
       linearVelocity={linearVelocity}

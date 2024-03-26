@@ -53,7 +53,7 @@ export const useDiceRollStore = create<DiceRollState>()(
         for (const die of dice) {
           state.rollValues[die.id] = null;
           state.rollTransforms[die.id] = null;
-          state.rollThrows[die.id] = getRandomDiceThrow(speedMultiplier);
+          state.rollThrows[die.id] = getRandomDiceThrow(Math.max(1.7,speedMultiplier));
         }
       }),
     clearRoll: (ids) =>
@@ -179,7 +179,7 @@ function rerollDraft(
         if (manualThrow) {
           rollThrows[id] = manualThrow;
         } else {
-          rollThrows[id] = getRandomDiceThrow();
+          rollThrows[id] = getRandomDiceThrow(1.7);
         }
       }
     } else if (isDice(dieOrDice)) {
@@ -209,7 +209,7 @@ function pushDraft(
     diceRoll.dice.push({id:newId, style:"TWD2", type:"D6"});
     rollValues[newId] = null;
     rollTransforms[newId] = null;
-    rollThrows[newId] = getRandomDiceThrow();
+    rollThrows[newId] = getRandomDiceThrow(2);
 
   for (let dieOrDice of diceRoll.dice) {
     if (isDie(dieOrDice)) {
@@ -225,7 +225,7 @@ function pushDraft(
         if (manualThrow) {
           rollThrows[id] = manualThrow;
         } else {
-          rollThrows[id] = getRandomDiceThrow();
+          rollThrows[id] = getRandomDiceThrow(1.7);
         }
       }
     } else if (isDice(dieOrDice)) {
@@ -253,7 +253,7 @@ function addDieDraft(
     diceRoll.dice.push({id:newId, style:"TWD1", type:"D6"});
     rollValues[newId] = null;
     rollTransforms[newId] = null;
-    rollThrows[newId] = getRandomDiceThrow();
+    rollThrows[newId] = getRandomDiceThrow(2);
 
 }
 
@@ -269,6 +269,6 @@ function addStressDraft(
     diceRoll.dice.push({id:newId, style:"TWD2", type:"D6"});
     rollValues[newId] = null;
     rollTransforms[newId] = null;
-    rollThrows[newId] = getRandomDiceThrow();
+    rollThrows[newId] = getRandomDiceThrow(2);
 
 }

@@ -20,7 +20,7 @@ export const D6 = React.forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>(
   ({ children, ...props }, ref) => {
     const { nodes } = useGLTF(glb) as unknown as GLTFResult;
     return (
-      <group ref={ref} {...props} scale={0.1} dispose={null}>
+      <group ref={ref} {...props} scale={0.08} dispose={null}>
         <group name="dice">
           <mesh name="d6" castShadow receiveShadow geometry={nodes.d6.geometry}>
             {children}

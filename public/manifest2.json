@@ -1,7 +1,7 @@
 {
   "name": "TWDU Dice",
-  "version": "1.0.0",
-  "manifest_version": 1.1,
+  "version": "1.1.0",
+  "manifest_version": 1.2,
   "author": "Jussi Soini aka Pulpscape",
   "short_name": "TWDU Dice",
   "display": "standalone",
