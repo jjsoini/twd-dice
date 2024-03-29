@@ -26,7 +26,7 @@ function getTheme(theme?: Theme) {
             main: "#ee99ff",
           },
           background: {
-            paper: "#222639",
+            paper: "#1D1C1E",
             default: "#1D1C1E",
           },
         },
